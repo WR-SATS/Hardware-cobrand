@@ -3,6 +3,7 @@
   --ink: #1d1d1f;
   --muted: #6e6e73;
   --blue: #06c;
+  --blue-strong: #0071e3;
   --line: rgba(0, 0, 0, 0.12);
 }
 
@@ -12,6 +13,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -20,10 +22,20 @@ body {
   background: var(--bg);
   font-family: "Noto Sans SC", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
   letter-spacing: 0;
+  overflow-x: hidden;
 }
 
 img {
   max-width: 100%;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible {
+  outline: 3px solid rgba(0, 113, 227, 0.45);
+  outline-offset: 4px;
 }
 
 h1,
@@ -41,6 +53,12 @@ ol {
   background: rgba(245, 245, 247, 0.82);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   backdrop-filter: saturate(180%) blur(18px);
+  transition: box-shadow 180ms ease, background 180ms ease;
+}
+
+.global-nav.is-scrolled {
+  background: rgba(245, 245, 247, 0.9);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
 
 .nav-inner {
@@ -79,7 +97,7 @@ ol {
   padding: 7px 12px;
   border-radius: 999px;
   color: #fff !important;
-  background: #0071e3;
+  background: var(--blue-strong);
 }
 
 .panel {
@@ -123,15 +141,15 @@ ol {
 
 h1 {
   margin-top: 12px;
-  font-size: clamp(54px, 8vw, 104px);
-  line-height: 0.98;
+  font-size: clamp(48px, 6.6vw, 92px);
+  line-height: 1.02;
   font-weight: 900;
 }
 
 h2 {
   margin-top: 10px;
-  font-size: clamp(40px, 6vw, 74px);
-  line-height: 1.02;
+  font-size: clamp(38px, 5.2vw, 68px);
+  line-height: 1.08;
   font-weight: 900;
 }
 
@@ -150,10 +168,11 @@ h2 {
 }
 
 .actions {
-  margin-top: 24px;
+  margin-top: 28px;
   display: flex;
   justify-content: center;
-  gap: 28px;
+  flex-wrap: wrap;
+  gap: 14px;
 }
 
 .actions a {
@@ -163,8 +182,66 @@ h2 {
   text-decoration: none;
 }
 
-.actions a::after {
-  content: " >";
+.button {
+  min-width: 132px;
+  padding: 13px 20px;
+  border-radius: 999px;
+  line-height: 1;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button.primary {
+  color: #fff;
+  background: var(--blue-strong);
+  box-shadow: 0 12px 28px rgba(0, 113, 227, 0.25);
+}
+
+.button.primary:hover {
+  background: #0077ed;
+}
+
+.button.ghost {
+  color: var(--blue);
+  background: rgba(0, 102, 204, 0.08);
+}
+
+.final-cta .actions a::after {
+  content: "›";
+  padding-left: 0.22em;
+  font-size: 1.08em;
+}
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 680ms ease, transform 680ms ease;
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .hero {
@@ -172,26 +249,26 @@ h2 {
 }
 
 .hero-copy {
-  padding-top: 74px;
+  padding-top: 84px;
 }
 
 .hero-art {
   width: min(1440px, 100%);
-  margin-top: 4px;
+  margin-top: 24px;
 }
 
 .hero-art img {
   display: block;
   width: 100%;
-  min-height: 430px;
+  min-height: 420px;
   object-fit: cover;
   object-position: center;
 }
 
 .product-story {
-  min-height: 840px;
+  min-height: 820px;
   background:
-    radial-gradient(circle at 50% 32%, rgba(48, 48, 54, 0.95), transparent 38%),
+    radial-gradient(circle at 50% 28%, rgba(34, 34, 38, 0.95), transparent 38%),
     #000;
 }
 
@@ -199,10 +276,31 @@ h2 {
   position: absolute;
   inset: auto 0 0;
   width: 100%;
-  height: 66%;
+  height: 58%;
   object-fit: cover;
-  object-position: center 42%;
-  opacity: 0.92;
+  object-position: center;
+  opacity: 1;
+}
+
+.feature-list {
+  width: min(760px, calc(100vw - 40px));
+  margin: 28px auto 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.feature-list span {
+  padding: 16px 14px;
+  color: rgba(245, 245, 247, 0.82);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.feature-list span + span {
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .grid-panels {
@@ -214,7 +312,7 @@ h2 {
 
 .tile {
   position: relative;
-  min-height: 720px;
+  min-height: 680px;
   overflow: hidden;
   display: grid;
   justify-items: center;
@@ -227,36 +325,32 @@ h2 {
 
 .tile img {
   position: absolute;
-  left: 7%;
-  right: 7%;
-  bottom: 42px;
-  width: 86%;
-  height: 48%;
+  left: 4%;
+  right: 4%;
+  bottom: 28px;
+  width: 92%;
+  height: 52%;
   object-fit: contain;
   border-radius: 22px;
-  mix-blend-mode: multiply;
 }
 
 .tile.black {
   background:
-    radial-gradient(circle at 50% 75%, rgba(0, 113, 227, 0.36), transparent 34%),
-    linear-gradient(180deg, #161617 0%, #000 100%);
+    radial-gradient(circle at 50% 88%, rgba(0, 113, 227, 0.16), transparent 34%),
+    linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+  color: var(--ink);
 }
 
 .tile.black::after {
-  content: "KeyPal";
-  position: absolute;
-  left: 50%;
-  bottom: 86px;
-  transform: translateX(-50%);
-  color: rgba(255, 255, 255, 0.08);
-  font-size: clamp(90px, 13vw, 210px);
-  line-height: 1;
-  font-weight: 900;
+  content: none;
+}
+
+.tile.black .copy > p:not(.kicker) {
+  color: var(--muted);
 }
 
 .tiers {
-  min-height: 720px;
+  min-height: 680px;
 }
 
 .tier-row {
@@ -315,14 +409,14 @@ h2 {
 .case-panel {
   min-height: 820px;
   color: #fff;
-  background: #000;
+  background: #f5f5f7;
 }
 
 .case-panel::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0) 36%, rgba(0, 0, 0, 0.78));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0.08) 40%, rgba(0, 0, 0, 0.5));
 }
 
 .case-panel .copy {
@@ -336,7 +430,8 @@ h2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.84;
+  object-position: center;
+  opacity: 0.96;
 }
 
 .process {
@@ -457,11 +552,16 @@ h2 {
   }
 
   .actions {
-    gap: 20px;
+    gap: 12px;
   }
 
   .actions a {
-    font-size: 17px;
+    font-size: 16px;
+  }
+
+  .button {
+    min-width: 124px;
+    padding: 12px 16px;
   }
 
   .hero-art img {
@@ -469,7 +569,16 @@ h2 {
   }
 
   .product-story img {
-    height: 58%;
+    height: 52%;
+  }
+
+  .feature-list {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-list span + span {
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
   }
 
   .tier-row,
